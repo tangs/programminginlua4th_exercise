@@ -105,3 +105,34 @@ print("4.8:")
 print(ispali_ignspace("step on no pets"))
 print(ispali_ignspace("step on nopets"))
 print(ispali_ignspace("banana"))
+print(ispali_ignspace("中国中"))
+
+-- 4.9
+local function utf8_ispali_ignspace(str)
+    local bytes = {}
+    local function isignore(idx)
+        local byte = bytes[idx]
+        return byte >= 0x20 and byte < 0x30
+    end
+    for _, byte in utf8.codes(str) do
+        table.insert(bytes, byte)
+    end
+    local s = 1
+    local e = #bytes
+    while s < e do
+        while s < e and isignore(s) do s = s + 1 end
+        while s < e and isignore(e) do e = e - 1 end
+        if bytes[s] ~= bytes[e] then return false end
+        s = s + 1
+        e = e - 1
+    end
+    return true
+end
+
+print("4.9:")
+print(utf8_ispali_ignspace("step on no pets"))
+print(utf8_ispali_ignspace("step on nopets"))
+print(utf8_ispali_ignspace("banana"))
+print(utf8_ispali_ignspace("中国中"))
+print(utf8_ispali_ignspace("中 国中"))
+print(utf8_ispali_ignspace("中 国中哥"))
