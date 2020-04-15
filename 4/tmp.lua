@@ -65,3 +65,43 @@ end
 print(utf8_remove("你好 世界", 1, 2))
 print(utf8_remove("你好 世界", 3, 2))
 print(utf8_remove("你好 世界", 5, 2))
+
+-- 4.7
+local function ispali(str)
+    local s = 1
+    local e = #str
+    while s < e do
+        if str:byte(s) ~= str:byte(e) then return false end
+        s = s + 1
+        e = e - 1
+    end
+    return true
+end
+
+print("4.7:")
+print(ispali("step on no pets"))
+print(ispali("step on nopets"))
+print(ispali("banana"))
+
+-- 4.8
+local function ispali_ignspace(str)
+    local function isignore(idx)
+        local byte = str:byte(idx)
+        return byte >= 0x20 and byte < 0x30
+    end
+    local s = 1
+    local e = #str
+    while s < e do
+        while s < e and isignore(s) do s = s + 1 end
+        while s < e and isignore(e) do e = e - 1 end
+        if str:byte(s) ~= str:byte(e) then return false end
+        s = s + 1
+        e = e - 1
+    end
+    return true
+end
+
+print("4.8:")
+print(ispali_ignspace("step on no pets"))
+print(ispali_ignspace("step on nopets"))
+print(ispali_ignspace("banana"))
